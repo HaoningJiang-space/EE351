@@ -8,12 +8,16 @@
 <body>
     <!-- Navigation Bar -->
     <nav>
-        <a href="{{ url_for('home') }}">Logo</a>
-        <a href="{{ url_for('store') }}">Store</a>
-        <div class="user-menu">
-            Username
-            <a href="{{ url_for('user_profile') }}">Homepage</a>
-            <a href="{{ url_for('logout') }}">Logout</a>
+        <div class="logo">
+            <a href="{{ url_for('home') }}">Logo</a>
+        </div>
+        <div class="nav-links">
+            <a href="{{ url_for('store') }}">Store</a>
+            <div class="user-menu">
+                <span>Username</span>
+                <a href="{{ url_for('user_profile') }}">Homepage</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            </div>
         </div>
     </nav>
     <!-- Main Content -->
@@ -22,7 +26,8 @@
     </div>
     <!-- Footer -->
     <footer>
-        <p>Copyright | About Us | Contact</p>
+        <p>&copy; 2024 Game Store. All rights reserved.</p>
+        <p><a href="#">About Us</a> | <a href="#">Contact</a></p>
     </footer>
 </body>
 </html>

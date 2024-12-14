@@ -3,11 +3,222 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    background-color: #f4f4f4;
 }
+
 /* Navigation Bar Styles */
 nav {
     background-color: #333;
     color: #fff;
     padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
-/* Other Styles */
+
+nav .logo a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 24px;
+}
+
+nav .nav-links {
+    display: flex;
+    align-items: center;
+}
+
+nav .nav-links a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+nav .user-menu {
+    display: flex;
+    align-items: center;
+}
+
+nav .user-menu span {
+    margin-right: 10px;
+}
+
+/* Hero Section Styles */
+.hero {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.hero h1 {
+    margin: 0;
+    font-size: 48px;
+}
+
+.hero p {
+    margin: 10px 0 0;
+    font-size: 24px;
+}
+
+/* Game Grid Styles */
+.game-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+    justify-content: center;
+}
+
+.game-card {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 200px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.game-card:hover {
+    transform: scale(1.05);
+}
+
+.game-card img {
+    width: 100%;
+    height: auto;
+}
+
+/* Game Detail Styles */
+.game-detail {
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+}
+
+.game-header {
+    display: flex;
+    gap: 20px;
+}
+
+.game-cover {
+    width: 300px;
+    height: auto;
+}
+
+.game-info {
+    flex: 1;
+}
+
+.game-price {
+    font-size: 24px;
+    color: #e74c3c;
+}
+
+.game-description {
+    margin-top: 10px;
+}
+
+.game-extra {
+    margin-top: 20px;
+}
+
+.screenshots {
+    display: flex;
+    gap: 10px;
+}
+
+.screenshots img {
+    width: 200px;
+    height: auto;
+}
+
+.comments {
+    margin-top: 20px;
+}
+
+/* User Profile Styles */
+.user-profile {
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    text-align: center;
+}
+
+.user-profile h2 {
+    margin-top: 0;
+}
+
+.user-info {
+    margin: 20px 0;
+}
+
+.user-info p {
+    margin: 10px 0;
+}
+
+.user-actions {
+    margin: 20px 0;
+}
+
+.user-actions .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+    margin: 5px;
+}
+
+.user-actions .btn:hover {
+    background-color: #2980b9;
+}
+
+.user-history {
+    margin: 20px 0;
+}
+
+.user-history ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.user-history li {
+    background-color: #f4f4f4;
+    margin: 5px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+footer p {
+    margin: 5px 0;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Additional Styles for Home Page */
+.featured-games, .latest-releases, .top-sellers {
+    margin: 20px 0;
+}
+
+.featured-games h2, .latest-releases h2, .top-sellers h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
