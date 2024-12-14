@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+    <h2>Popular Games</h2>
+    <div class="game-grid">
+        <!-- Example game cards -->
+        {% for game in popular_games %}
+        <div class="game-card">
+            <img src="{{ game.cover_url }}" alt="Game Cover">
+            <h3>{{ game.name }}</h3>
+            <p>Price: ${{ game.price }}</p>
+            <a href="{{ url_for('game_detail', game_id=game.id) }}">View Details</a>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

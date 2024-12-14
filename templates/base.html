@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Game Store{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="{{ url_for('home') }}">Logo</a>
+        <a href="{{ url_for('store') }}">Store</a>
+        <div class="user-menu">
+            Username
+            <a href="{{ url_for('user_profile') }}">Homepage</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </nav>
+    <!-- Main Content -->
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+    <!-- Footer -->
+    <footer>
+        <p>Copyright | About Us | Contact</p>
+    </footer>
+</body>
+</html>
