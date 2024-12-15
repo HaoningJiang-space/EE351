@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Play {{ game.name }}{% endblock %}
+
+{% block content %}
+    <div class="play-game">
+        <h2>Playing: {{ game.name }}</h2>
+        <img id="game-frame" src="" alt="Game Frame" width="800" height="600">
+    </div>
+    <!-- 引入 Socket.IO 客户端库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+    <!-- JavaScript 代码 -->
+    <script type="text/javascript">
+        var socket = io();
+        socket.emit('start_game', {game_id: {{ game.id }}});
+        socket.on('game_frame', function(data) {
+            var img = document.getElementById('game-frame');
+            img.src = 'data:image/jpeg;base64,' + data.image;
+        });
+    </script>
+{% endblock %}

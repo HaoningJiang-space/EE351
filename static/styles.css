@@ -222,3 +222,31 @@ footer a {
     text-align: center;
     margin-bottom: 20px;
 }
+
+/* 按钮样式 */
+.btn.play-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #27ae60;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+    margin-top: 10px;
+}
+
+.btn.play-btn:hover {
+    background-color: #2ecc71;
+}
+
+/* 游戏播放页面样式 */
+.play-game {
+    text-align: center;
+    padding: 20px;
+}
+
+.play-game iframe {
+    border: none;
+    width: 800px;
+    height: 600px;
+}

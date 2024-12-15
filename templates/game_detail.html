@@ -8,6 +8,7 @@
                 <h2>{{ game.name }}</h2>
                 <p class="game-price">Price: ${{ game.price }}</p>
                 <p class="game-description">{{ game.description }}</p>
+                <a href="{{ url_for('play_game', game_id=game.id) }}" class="btn play-btn">Begin Game</a>
             </div>
         </div>
         <!-- Screenshots, comments, etc. -->
