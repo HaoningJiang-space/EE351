@@ -139,58 +139,143 @@ nav .user-menu span {
 
 /* User Profile Styles */
 .user-profile {
+    max-width: 800px;
+    margin: 0 auto;
     padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin: 20px;
-    text-align: center;
-}
-
-.user-profile h2 {
-    margin-top: 0;
 }
 
 .user-info {
-    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-.user-info p {
-    margin: 10px 0;
+.profile-picture img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 20px;
+    border: 2px solid #007bff;
+}
+
+.details p {
+    margin: 5px 0;
+    font-size: 16px;
 }
 
 .user-actions {
-    margin: 20px 0;
+    margin-bottom: 30px;
 }
 
 .user-actions .btn {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #3498db;
+    margin-right: 10px;
+    padding: 10px 15px;
+    background-color: #007bff;
     color: #fff;
     text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.2s;
-    margin: 5px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
 }
 
 .user-actions .btn:hover {
-    background-color: #2980b9;
+    background-color: #0056b3;
 }
 
-.user-history {
-    margin: 20px 0;
+/* Purchase History Styles */
+.user-history table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
 }
 
-.user-history ul {
+.user-history th, .user-history td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.user-history th {
+    background-color: #f2f2f2;
+}
+
+.user-history tr:nth-child(even){
+    background-color: #f9f9f9;
+}
+
+.user-history tr:hover {
+    background-color: #ddd;
+}
+
+/* User Comments Styles */
+.user-comments ul {
     list-style-type: none;
     padding: 0;
 }
 
-.user-history li {
-    background-color: #f4f4f4;
-    margin: 5px 0;
+.user-comments li {
+    background-color: #f9f9f9;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.user-comments strong {
+    font-size: 16px;
+    color: #333;
+}
+
+.user-comments p {
+    margin-top: 5px;
+    font-size: 14px;
+    color: #555;
+}
+
+/* Edit Profile Styles */
+.edit-profile {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.edit-profile form {
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-profile label {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.edit-profile input[type="text"],
+.edit-profile input[type="email"],
+.edit-profile select,
+.edit-profile textarea {
     padding: 10px;
     border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.edit-profile input[type="file"] {
+    padding: 5px 0;
+}
+
+.edit-profile button {
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.edit-profile button:hover {
+    background-color: #218838;
 }
 
 /* Footer Styles */
@@ -290,4 +375,37 @@ footer a {
 
 .comment-form button:hover {
     background-color: #0056b3;
+}
+
+/* filepath: /Users/haoning/project/EE351/static/styles.css */
+
+.flash-messages {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 300px;
+}
+
+.flash {
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.flash.success {
+    background-color: #28a745;
+}
+
+.flash.error {
+    background-color: #dc3545;
+}
+
+.flash.warning {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.flash.info {
+    background-color: #17a2b8;
 }
