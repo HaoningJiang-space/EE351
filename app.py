@@ -1,41 +1,45 @@
 import eventlet
 eventlet.monkey_patch()
 
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request, redirect
 from flask_socketio import SocketIO, emit
-import gymnasium as gym
-import base64
 from io import BytesIO
 from PIL import Image
 
 app = Flask(__name__)
 socketio = SocketIO(app, async_mode='eventlet')
 
-# 定义游戏数据
+# 定义游戏数据，包括评论
 games = [
     {
         'id': 1,
         'name': 'Mario',
-        'folder': 'mario',  # 添加游戏文件夹名称
-        'cover_url': 'mario.jpg',
+        'folder': 'mario',
+        'cover_url': 'mario.png',
+        'screenshots': ['mario1.png', 'mario2.png'],
         'price': 59.99,
-        'description': 'Join Mario on an epic adventure through the Mushroom Kingdom...'
+        'description': 'Join Mario on an epic adventure through the Mushroom Kingdom...',
+        'comments': []  # 初始化评论列表
     },
     {
         'id': 2,
         'name': 'Airplane Battle',
         'folder': 'airplane_battle',
-        'cover_url': 'plane.jpg',
+        'cover_url': 'plane.png',
+        'screenshots': ['plane1.png', 'plane2.png'],
         'price': 39.99,
-        'description': 'Take to the skies in Airplane Battle...'
+        'description': 'Take to the skies in Airplane Battle...',
+        'comments': []
     },
     {
         'id': 3,
         'name': 'Snake',
         'folder': 'snake',
-        'cover_url': 'snake.jpg',
+        'cover_url': 'snake.png',
+        'screenshots': ['snake1.png', 'snake2.png'],
         'price': 19.99,
-        'description': 'Relive the nostalgia with Snake...'
+        'description': 'Relive the nostalgia with Snake...',
+        'comments': []
     }
 ]
 
@@ -53,9 +57,18 @@ def home():
 def store():
     return render_template('store.html', games=games)
 
-@app.route('/game/<int:game_id>')
+@app.route('/game/<int:game_id>', methods=['GET', 'POST'])
 def game_detail(game_id):
     game = next((g for g in games if g['id'] == game_id), None)
+    if not game:
+        return "Game not found", 404
+
+    if request.method == 'POST':
+        comment = request.form.get('comment')
+        if comment:
+            game['comments'].append(comment)
+        return redirect(url_for('game_detail', game_id=game_id))
+
     return render_template('game_detail.html', game=game)
 
 @app.route('/user')
@@ -70,30 +83,10 @@ def play_game(game_id):
     else:
         return "Game not found", 404
 
-@socketio.on('start_game')
-def start_game(data):
-    game_id = data['game_id']
-    game = next((g for g in games if g['id'] == game_id), None)
-    if game and game['name'] == 'Mario':
-        env = gym.make('gym_super_mario_bros:SuperMarioBros-v0')  # 使用正确的环境名称
-        state = env.reset()
-        while True:
-            action = env.action_space.sample()  # 随机动作，您可以根据需要修改
-            state, reward, done, info = env.step(action)
-            img = env.render(mode='rgb_array')
-            img = Image.fromarray(img)
-            buffered = BytesIO()
-            img.save(buffered, format="JPEG")
-            img_str = base64.b64encode(buffered.getvalue()).decode('utf-8')
-            emit('game_frame', {'image': img_str})
-            if done:
-                break
-        env.close()
-
 @app.route('/logout')
 def logout():
     # 在这里添加登出逻辑，例如清除会话等
     return "You have been logged out"
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=5000, debug=False, use_reloader=False)
+    socketio.run(app, host='0.0.0.0', port=8080, debug=True, use_reloader=False)
