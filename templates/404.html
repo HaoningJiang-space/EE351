@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}The page cannot be found{% endblock %}
+
+{% block content %}
+    <div class="error-page">
+        <h1>404</h1>
+        <h2>The page cannot be found</h2>
+        <p>Sorry the page you need doesn't exist</p>
+        <a href="{{ url_for('home') }}" class="btn">Back to the home</a>
+    </div>
+{% endblock %}

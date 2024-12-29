@@ -1,15 +1,55 @@
 import eventlet
 eventlet.monkey_patch()
 
-from flask import Flask, render_template, url_for, request, redirect ,session, flash
+from flask import Flask, render_template, url_for, request, redirect, session, flash
 from flask_socketio import SocketIO, emit
 from io import BytesIO
 from PIL import Image
+from werkzeug.security import generate_password_hash, check_password_hash
+from functools import wraps
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///game_store.db'  
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 socketio = SocketIO(app, async_mode='eventlet')
 
+# 定义用户模型
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(150), nullable=False, unique=True)
+    email = db.Column(db.String(150), nullable=False, unique=True)
+    password = db.Column(db.String(200), nullable=False)
+    member_since = db.Column(db.String(50), nullable=False, default='January 2023')
+    membership_level = db.Column(db.String(50), nullable=False, default='Gold')
+    address = db.Column(db.String(200), nullable=False, default='1234 Game St, Gamer City, 56789')
+    phone = db.Column(db.String(20), nullable=False, default='123-456-7890')
+    profile_picture = db.Column(db.String(100), default='player1.png')
+    favorite_games = db.Column(db.String(300), nullable=False, default='')
+    purchase_history = db.relationship('Purchase', backref='user', lazy=True)
+    comments = db.relationship('Comment', backref='user', lazy=True)
+
+class Purchase(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    game_name = db.Column(db.String(100), nullable=False)
+    date = db.Column(db.String(50), nullable=False)
+    amount = db.Column(db.Float, nullable=False)
+    payment_method = db.Column(db.String(50), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    game_name = db.Column(db.String(100), nullable=False)
+    date = db.Column(db.String(50), nullable=False)
+    content = db.Column(db.String(500), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+# 定义游戏数据，包括评论
 # 定义游戏数据，包括评论
 games = [
     {
@@ -44,26 +84,14 @@ games = [
     }
 ]
 
-# 模拟用户数据
-user = {
-    'username': 'Player1',
-    'email': 'player1@example.com',
-    'member_since': 'January 2023',
-    'membership_level': 'Gold',
-    'address': '1234 Game St, Gamer City, 56789',
-    'phone': '123-456-7890',
-    'profile_picture': 'player1.png',  # 确保在 static/profile_pictures/ 下有此图片
-    'favorite_games': ['Mario', 'Airplane Battle', 'Snake'],
-    'purchase_history': [
-        {'game_name': 'Mario', 'date': '2023-01-15', 'amount': 59.99, 'payment_method': 'Credit Card'},
-        {'game_name': 'Airplane Battle', 'date': '2023-02-20', 'amount': 39.99, 'payment_method': 'PayPal'},
-        {'game_name': 'Snake', 'date': '2023-03-10', 'amount': 19.99, 'payment_method': 'Credit Card'},
-    ],
-    'comments': [
-        {'game_name': 'Mario', 'date': '2023-01-20', 'content': 'Great game! Had a lot of fun.'},
-        {'game_name': 'Airplane Battle', 'date': '2023-02-25', 'content': 'Exciting and challenging.'}
-    ]
-}
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user' not in session:
+            flash('Please log in to access this page.', 'warning')
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 @app.route('/')
 def home():
@@ -88,26 +116,31 @@ def game_detail(game_id):
     return render_template('game_detail.html', game=game)
 
 @app.route('/user')
+@login_required
 def user_profile():
-    return render_template('user.html', user=user)
+    current_user = User.query.filter_by(username=session['user']).first()
+    return render_template('user.html', user=current_user)
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
+@login_required
 def edit_profile():
+    current_user = User.query.filter_by(username=session['user']).first()
     if request.method == 'POST':
         # 获取表单数据并更新用户信息
-        user['username'] = request.form.get('username')
-        user['email'] = request.form.get('email')
-        user['address'] = request.form.get('address')
-        user['phone'] = request.form.get('phone')
-        user['membership_level'] = request.form.get('membership_level')
+        current_user.username = request.form.get('username').strip()
+        current_user.email = request.form.get('email').strip().lower()
+        current_user.address = request.form.get('address').strip()
+        current_user.phone = request.form.get('phone').strip()
+        current_user.membership_level = request.form.get('membership_level').strip()
         # 处理头像上传（需实现文件上传逻辑）
-        # 这里只做简单示范，实际应用中需处理文件保存和安全性
         profile_picture = request.files.get('profile_picture')
         if profile_picture:
             profile_picture.save(f'static/profile_pictures/{profile_picture.filename}')
-            user['profile_picture'] = profile_picture.filename
+            current_user.profile_picture = profile_picture.filename
+        db.session.commit()
+        flash('Profile updated successfully!', 'success')
         return redirect(url_for('user_profile'))
-    return render_template('edit_profile.html', user=user)
+    return render_template('edit_profile.html', user=current_user)
 
 @app.route('/play/<int:game_id>', methods=['GET', 'POST'])
 def play_game(game_id):
@@ -128,6 +161,61 @@ def logout():
     session.clear()
     flash('You logged out successfully', 'success')
     return redirect(url_for('home'))
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form.get('username').strip()
+        email = request.form.get('email').strip().lower()
+        password = request.form.get('password')
+        confirm_password = request.form.get('confirm_password')
+
+        if password != confirm_password:
+            flash('Passwords do not match.', 'error')
+            return redirect(url_for('register'))
+
+        # 检查用户是否已存在
+        existing_user = User.query.filter((User.username == username) | (User.email == email)).first()
+        if existing_user:
+            flash('Username or email already exists.', 'error')
+            return redirect(url_for('register'))
+
+        # 创建新用户
+        hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
+        new_user = User(
+            username=username,
+            email=email,
+            password=hashed_password
+            # favorite_games 会自动使用默认值 ''
+        )
+        db.session.add(new_user)
+        db.session.commit()
+        session['user'] = new_user.username
+        flash('Registration successful!', 'success')
+        return redirect(url_for('home'))
+
+    return render_template('register.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form.get('email').strip().lower()
+        password = request.form.get('password')
+
+        user_obj = User.query.filter_by(email=email).first()
+        if user_obj and check_password_hash(user_obj.password, password):
+            session['user'] = user_obj.username
+            flash('Logged in successfully!', 'success')
+            return redirect(url_for('home'))
+        else:
+            flash('Invalid credentials.', 'error')
+            return redirect(url_for('login'))
+
+    return render_template('login.html')
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=8080, debug=True, use_reloader=False)

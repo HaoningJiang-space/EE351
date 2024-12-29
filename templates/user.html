@@ -2,7 +2,7 @@
 {% block title %}User Profile{% endblock %}
 {% block content %}
     <div class="user-profile">
-        <h2>User Profile</h2>
+        <h2>{{ user.username }}'s Profile</h2>
         <div class="user-info">
             <div class="profile-picture">
                 <img src="{{ url_for('static', filename='profile_pictures/' ~ user.profile_picture) }}" alt="Profile Picture">
@@ -14,7 +14,13 @@
                 <p><strong>Membership Level:</strong> {{ user.membership_level }}</p>
                 <p><strong>Address:</strong> {{ user.address }}</p>
                 <p><strong>Phone Number:</strong> {{ user.phone }}</p>
-                <p><strong>Favorite Games:</strong> {{ user.favorite_games | join(', ') }}</p>
+                <p><strong>Favorite Games:</strong>
+                    {% if user.favorite_games %}
+                        {{ user.favorite_games | join(', ') }}
+                    {% else %}
+                        None
+                    {% endif %}
+                </p>
             </div>
         </div>
         <div class="user-actions">
