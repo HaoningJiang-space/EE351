@@ -87,7 +87,7 @@ games = [
         'name': 'Star Wars',
         'folder': 'silence',
         'cover_url': 'silence.jpg',
-        'screenshots': ['silence1.png', 'silence2.png'],
+        'screenshots': ['conquer_planet.png', 'planet.png'],
         'price': 49.99,
         'description': '飞向无垠的星河，在寂静宇宙中展开星球大战……',
         'comments': []
