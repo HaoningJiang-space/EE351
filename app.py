@@ -50,7 +50,7 @@ class Comment(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 # 定义游戏数据，包括评论
-# 定义游戏数据，包括评论
+
 games = [
     {
         'id': 1,

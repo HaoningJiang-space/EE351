@@ -409,3 +409,99 @@ footer a {
 .flash.info {
     background-color: #17a2b8;
 }
+
+
+/* styles.css */
+
+/* 游戏结束覆盖层样式 */
+#gameOverOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    z-index: 1000;
+}
+
+#gameOverOverlay h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+#gameOverOverlay p {
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+
+#restartButton {
+    padding: 12px 24px;
+    font-size: 20px;
+    background-color: #1E90FF;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#restartButton:hover {
+    background-color: #63B3ED;
+}
+
+/* 开始游戏覆盖层样式 */
+#startOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    z-index: 1000;
+}
+
+#startOverlay h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+#startOverlay p {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+#startOverlay ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+#startOverlay li {
+    font-size: 20px;
+    margin: 10px 0;
+}
+
+#startButton {
+    padding: 12px 24px;
+    font-size: 20px;
+    background-color: #1E90FF;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#startButton:hover {
+    background-color: #63B3ED;
+}

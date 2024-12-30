@@ -2,9 +2,9 @@
 {% block title %}Play {{ game.name }}{% endblock %}
 {% block content %}
     <div class="play-game">
-        <h2>Playing: {{ game.name }}</h2>
-        <!-- Add embedded game content or functionality here -->
-        <p>The game play functionality has been temporarily removed.</p>
+        <h2>Play: {{ game.name }}</h2>
+        <!-- Add canvas element -->
+        <canvas id="gameCanvas" width="800" height="600" style="background: black; display: block; margin: 0 auto; border: 2px solid #1E90FF; border-radius: 10px; box-shadow: 0 0 20px rgba(30, 144, 255, 0.7);"></canvas>
     </div>
     <!-- Screenshots and Comments -->
     <div class="game-extra">
@@ -26,7 +26,7 @@
                 <p>No comments yet. Be the first to comment!</p>
             {% endif %}
         </div>
-        <!-- 评论提交表单 -->
+        <!-- Comment submission form -->
         <div class="comment-form">
             <form method="POST" action="{{ url_for('game_detail', game_id=game.id) }}">
                 <textarea name="comment" placeholder="Enter your comment here..." required></textarea>
@@ -35,4 +35,6 @@
             </form>
         </div>
     </div>
+    <!-- Include game scripts -->
+    <script src="{{ url_for('static', filename='js/airplane_battle.js') }}"></script>
 {% endblock %}
