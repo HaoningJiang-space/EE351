@@ -1,7 +1,7 @@
 import eventlet
 eventlet.monkey_patch()
 
-from flask import Flask, render_template, url_for, request, redirect, session, flash
+from flask import Flask, render_template, url_for, request, redirect, session, flash ,send_from_directory
 from flask_socketio import SocketIO, emit
 from io import BytesIO
 from PIL import Image
@@ -81,6 +81,26 @@ games = [
         'price': 19.99,
         'description': 'Relive the nostalgia with Snake...',
         'comments': []
+    },
+    {
+        'id': 4,
+        'name': '星球大战',
+        'folder': 'silence',
+        'cover_url': 'silence.jpg',
+        'screenshots': ['silence1.png', 'silence2.png'],
+        'price': 49.99,
+        'description': '飞向无垠的星河，在寂静宇宙中展开星球大战……',
+        'comments': []
+    },
+    {
+        'id': 5,
+        'name': 'Life in Digua',
+        'folder': 'life-in-digua-main',
+        'cover_url': 'brest.png',
+        'screenshots': ['digua1.png', 'digua2.png'],
+        'price': 99.99,
+        'description': 'Welcome to Life in Digua! A mysterious thriller awaits...',
+        'comments': []
     }
 ]
 
@@ -154,7 +174,14 @@ def play_game(game_id):
             game['comments'].append(comment)
         return redirect(url_for('play_game', game_id=game_id))
 
-    return render_template('play_game.html', game=game)
+    # 如果是“星球大战”，则使用silence.html模板
+    if game['name'] == '星球大战':
+        return render_template('silence.html', game=game)
+    elif game['name'] == 'Life in Digua':
+        # 不移动 index.html，直接从其所在目录提供文件
+        return send_from_directory('/Users/haoning/project/EE351/life-in-digua-main', 'index.html')
+    else:
+        return render_template('play_game.html', game=game)
 
 @app.route('/logout')
 def logout():
