@@ -84,7 +84,7 @@ games = [
     },
     {
         'id': 4,
-        'name': '星球大战',
+        'name': 'Star Wars',
         'folder': 'silence',
         'cover_url': 'silence.jpg',
         'screenshots': ['silence1.png', 'silence2.png'],
@@ -96,8 +96,8 @@ games = [
         'id': 5,
         'name': 'Life in Digua',
         'folder': 'life-in-digua-main',
-        'cover_url': 'brest.png',
-        'screenshots': ['digua1.png', 'digua2.png'],
+        'cover_url': 'brest.jpg',
+        'screenshots': ['digua.jpg', 'guoba.jpg'],
         'price': 99.99,
         'description': 'Welcome to Life in Digua! A mysterious thriller awaits...',
         'comments': []
@@ -175,11 +175,12 @@ def play_game(game_id):
         return redirect(url_for('play_game', game_id=game_id))
 
     # 如果是“星球大战”，则使用silence.html模板
-    if game['name'] == '星球大战':
+    if game['name'] == 'Star Wars':
         return render_template('silence.html', game=game)
     elif game['name'] == 'Life in Digua':
         # 不移动 index.html，直接从其所在目录提供文件
-        return send_from_directory('/Users/haoning/project/EE351/life-in-digua-main', 'index.html')
+        # return send_from_directory('/Users/haoning/project/EE351/life-in-digua-main', 'index.html')
+        return render_template('index.html', game=game)
     else:
         return render_template('play_game.html', game=game)
 

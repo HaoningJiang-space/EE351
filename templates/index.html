@@ -2,12 +2,13 @@
 <head>
 	<title>Life in Digua</title>
 	<meta charset="UTF-8">
-	<link rel="shortcut icon" sizes="57x57" href="/Users/haoning/project/EE351/static/digua/src/icon.jpg"/>
+	<link rel="shortcut icon" sizes="57x57" href="{{ url_for('static', filename='images/lifeindigua/icon.jpg') }}"/>
 	<meta name="keywords" content="游戏"/>
     <meta name="author" content="Charleyxiao"/>
-	<script src="{{ url_for('static', filename='digua/jquery-3.5.1.js') }}"></script>
-	<script src="{{ url_for('static', filename='digua/lifeindigua.js') }}"></script>
-	<link href="lifeindigua.css" rel="stylesheet" type="text/css"/>
+	<!-- JavaScript -->
+	<script src="{{ url_for('static', filename='js/jquery-3.5.1.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/lifeindigua.js') }}"></script>
+	<link href="{{ url_for('static', filename='css/lifeindigua.css') }}" rel="stylesheet" type="text/css"/>
 	<!--<script src="requirejs-2.3.6/require.js"></script>-->
 </head>
 <body id="body" onload="">
