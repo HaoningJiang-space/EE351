@@ -183,6 +183,10 @@ def play_game(game_id):
         return render_template('index.html', game=game)
     else:
         return render_template('play_game.html', game=game)
+    
+@app.route('/play/src/<path:filename>')
+def send_src(filename):
+    return send_from_directory('static/js/src', filename)
 
 @app.route('/logout')
 def logout():
@@ -246,4 +250,6 @@ def page_not_found(e):
     return render_template('404.html'), 404
 
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
     socketio.run(app, host='0.0.0.0', port=8080, debug=True, use_reloader=False)

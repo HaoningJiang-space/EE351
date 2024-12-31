@@ -4,10 +4,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const playerImg = new Image();
     playerImg.src = '/static/images/player.png'; // 修改为绝对路径
+
+    const enemyImg = new Image();
+    enemyImg.src = '/static/images/enemy.jpg'; // 修改为绝对路径
+
     // Define supported audio formats
     const audioFormats = [
-        { mime: 'audio/mpeg', src: '/static/audio/background_music.mp3' }, // MP3
+       // MP3
         { mime: 'audio/ogg', src: '/static/audio/background_music.ogg' }, // OGG
+        { mime: 'audio/mpeg', src: '/static/audio/background_music.mp3' }, // MP3
         { mime: 'audio/wav', src: '/static/audio/background_music.wav' }, // WAV
         { mime: 'audio/mp4', src: '/static/audio/background_music.m4a' }, // M4A
     ];
@@ -113,14 +118,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         draw() {
             // Draw a more complex triangular enemy
-            ctx.fillStyle = this.color;
-            ctx.beginPath();
-            ctx.moveTo(this.x + this.width / 2, this.y);
-            ctx.lineTo(this.x, this.y + this.height);
-            ctx.lineTo(this.x + this.width, this.y + this.height);
-            ctx.lineTo(this.x + this.width / 2, this.y + this.height / 2);
-            ctx.closePath();
-            ctx.fill();
+            if (enemyImg.complete) { // Ensure image is loaded
+                ctx.drawImage(enemyImg, this.x, this.y, this.width, this.height);
+            }
+            // ctx.fillStyle = this.color;
+            // ctx.beginPath();
+            // ctx.moveTo(this.x + this.width / 2, this.y);
+            // ctx.lineTo(this.x, this.y + this.height);
+            // ctx.lineTo(this.x + this.width, this.y + this.height);
+            // ctx.lineTo(this.x + this.width / 2, this.y + this.height / 2);
+            // ctx.closePath();
+            // ctx.fill();
         }
 
         update() {
