@@ -255,6 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Show game over screen
     function showGameOver() {
+
         // Create game over overlay
         const overlay = document.createElement('div');
         overlay.id = 'gameOverOverlay';
@@ -278,6 +279,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Add overlay to the page
         document.body.appendChild(overlay);
+        
+        // { changed code }
+        const gameOverAudio = new Audio('/static/audio/res_fail_full.mp3');
+        gameOverAudio.play();
+        // { changed code }
 
         // Add click event to restart button
         const restartButton = document.getElementById('restartButton');

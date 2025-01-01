@@ -101,6 +101,16 @@ games = [
         'price': 99.99,
         'description': 'Welcome to Life in Digua! A mysterious thriller awaits...',
         'comments': []
+    },
+    {
+    'id': 6,
+    'name': 'Parkour',
+    'folder': 'parkour',
+    'cover_url': 'bg.jpg',
+    'screenshots': ['player.png', 'linka.png'],
+    'price': 29.99,
+    'description': '体验刺激的3D跑酷游戏，挑战你的极限！',
+    'comments': []
     }
 ]
 
@@ -181,12 +191,26 @@ def play_game(game_id):
         # 不移动 index.html，直接从其所在目录提供文件
         # return send_from_directory('/Users/haoning/project/EE351/life-in-digua-main', 'index.html')
         return render_template('index.html', game=game)
+    elif game['name'] == 'Parkour':
+        return render_template('parkour.html', game=game)
     else:
         return render_template('play_game.html', game=game)
     
+@app.route('/play/parkour.html')
+def play_index():
+    game = next((g for g in games if g['name'] == 'Parkour'), None)
+    if game:
+        return render_template('parkour.html', game=game)
+    return "Game not found", 404
+
+
 @app.route('/play/src/<path:filename>')
 def send_src(filename):
     return send_from_directory('static/js/src', filename)
+
+@app.route('/play/assets/<path:filename>')
+def send_assets(filename):
+    return send_from_directory('templates/assets', filename)
 
 @app.route('/logout')
 def logout():
